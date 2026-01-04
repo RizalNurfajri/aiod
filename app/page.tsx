@@ -46,7 +46,7 @@ const tools = [
         title: "TikTok Downloader",
         description:
             "Download video TikTok tanpa watermark dengan kualitas terbaik. Cepat, mudah, dan gratis.",
-        href: "/",
+        href: "/tiktok",
         icon: TikTokIcon,
         iconBgColor: "bg-pink-100 dark:bg-pink-500/20",
         iconColor: "text-pink-500",

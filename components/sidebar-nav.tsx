@@ -38,7 +38,7 @@ function TeraboxIcon({ className }: { className?: string }) {
 const menuItems = [
     {
         name: "TikTok",
-        href: "/",
+        href: "/tiktok",
         icon: TikTokIcon,
         color: "text-pink-500",
         bgHover: "hover:bg-pink-500/10",
@@ -133,8 +133,8 @@ export function SidebarNav() {
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors ${item.bgHover} ${isActive
-                                        ? "bg-accent text-accent-foreground font-medium"
-                                        : "text-muted-foreground hover:text-foreground"
+                                    ? "bg-accent text-accent-foreground font-medium"
+                                    : "text-muted-foreground hover:text-foreground"
                                     }`}
                             >
                                 <Icon className={`h-4 w-4 ${item.color}`} />
