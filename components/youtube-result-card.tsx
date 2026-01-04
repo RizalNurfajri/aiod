@@ -68,7 +68,7 @@ export function YoutubeResultCard({ videoUrl }: YoutubeResultCardProps) {
                 });
 
                 const data = await response.json();
-                console.log("Video info:", data);
+
 
                 if (!response.ok || !data.success) {
                     throw new Error(data.error || "Failed to get video info");
@@ -76,7 +76,7 @@ export function YoutubeResultCard({ videoUrl }: YoutubeResultCardProps) {
 
                 setVideoInfo(data.data);
             } catch (err) {
-                console.error("Error fetching info:", err);
+
                 setError(err instanceof Error ? err.message : "Failed to get video info");
             } finally {
                 setLoading(false);
@@ -102,7 +102,7 @@ export function YoutubeResultCard({ videoUrl }: YoutubeResultCardProps) {
             });
 
             const data = await response.json();
-            console.log("Download response:", data);
+
 
             if (!response.ok || !data.success) {
                 throw new Error(data.error || "Failed to get download link");
@@ -135,7 +135,7 @@ export function YoutubeResultCard({ videoUrl }: YoutubeResultCardProps) {
                 description: `Downloading ${title}...`,
             });
         } catch (err) {
-            console.error("Download error:", err);
+
             toast({
                 variant: "destructive",
                 title: "Download Failed",

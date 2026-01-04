@@ -1,18 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const SECURITY_HEADERS = {
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-    'Referrer-Policy': 'no-referrer',
-};
-
-function addSecurityHeaders(response: NextResponse): NextResponse {
-    Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-        response.headers.set(key, value);
-    });
-    return response;
-}
+import { addSecurityHeaders } from '@/lib/security';
 
 function isValidYoutubeUrl(url: string): boolean {
     const patterns = [
@@ -107,7 +94,7 @@ export async function POST(request: NextRequest) {
 
             const apiUrl = `https://api.gimita.id/api/downloader/ytdown?url=${encodeURIComponent(url)}&format_id=${formatId}&type=${type}`;
 
-            console.log('Calling ytdown:', apiUrl);
+
 
             const apiResponse = await fetch(apiUrl, {
                 method: 'GET',
@@ -119,7 +106,7 @@ export async function POST(request: NextRequest) {
             }
 
             const data = await apiResponse.json();
-            console.log('ytdown response:', data);
+
 
             if (!data.success) {
                 throw new Error(data.message || 'Failed to get download link');
@@ -149,7 +136,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
         ));
     } catch (error) {
-        console.error('YouTube API Error:', error);
+
         return addSecurityHeaders(NextResponse.json(
             { success: false, error: error instanceof Error ? error.message : 'Service temporarily unavailable' },
             { status: 500 }

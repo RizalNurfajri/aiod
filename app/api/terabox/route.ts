@@ -1,18 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const SECURITY_HEADERS = {
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-    'Referrer-Policy': 'no-referrer',
-};
-
-function addSecurityHeaders(response: NextResponse): NextResponse {
-    Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-        response.headers.set(key, value);
-    });
-    return response;
-}
+import { isValidProxyUrl, sanitizeResponse, validateRequestPayload, addSecurityHeaders } from '@/lib/security';
 
 function isValidTeraboxUrl(url: string): boolean {
     const patterns = [
@@ -86,7 +73,7 @@ export async function POST(request: NextRequest) {
             total: data.total || 0,
         }));
     } catch (error) {
-        console.error('Terabox API Error:', error);
+
         return addSecurityHeaders(NextResponse.json(
             { success: false, error: 'Service temporarily unavailable' },
             { status: 500 }

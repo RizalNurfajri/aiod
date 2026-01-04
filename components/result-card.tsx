@@ -42,9 +42,9 @@ export function ResultCard({ data }: ResultCardProps) {
             link.click();
             document.body.removeChild(link);
 
-            console.log('✅ Download started:', filename);
+
         } catch (error) {
-            console.error('Download error:', error);
+
         } finally {
             // Reset state after 2 seconds
             setTimeout(() => setDownloading(null), 2000);

@@ -6,25 +6,9 @@ import {
     sanitizeUrl,
     validateRequestPayload,
     sanitizeResponse,
-    isValidUserAgent
+    isValidUserAgent,
+    addSecurityHeaders
 } from '@/lib/security';
-
-/** Security headers for all responses */
-const SECURITY_HEADERS = {
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-    'Referrer-Policy': 'no-referrer',
-    'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
-};
-
-/** Add security headers to response */
-function addSecurityHeaders(response: NextResponse): NextResponse {
-    Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-        response.headers.set(key, value);
-    });
-    return response;
-}
 
 /**
  * POST /api/download
@@ -99,7 +83,7 @@ export async function POST(request: NextRequest) {
             NextResponse.json({ success: true, data: sanitizedData })
         );
     } catch (error) {
-        console.error('TikTok API Error:', error);
+
 
         const errorMessage = process.env.NODE_ENV === 'development'
             ? (error instanceof Error ? error.message : 'Unknown error')

@@ -1,18 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const SECURITY_HEADERS = {
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-    'Referrer-Policy': 'no-referrer',
-};
-
-function addSecurityHeaders(response: NextResponse): NextResponse {
-    Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-        response.headers.set(key, value);
-    });
-    return response;
-}
+import { isValidProxyUrl, sanitizeResponse, validateRequestPayload, addSecurityHeaders } from '@/lib/security';
 
 function isValidInstagramUrl(url: string): boolean {
     const patterns = [
@@ -104,7 +91,7 @@ export async function POST(request: NextRequest) {
                 title = oembedData.title;
             }
         } catch (e) {
-            console.log('Failed to fetch oembed data:', e);
+
         }
 
         // Process media items and attach thumbnail (proxied to bypass CORS)
@@ -130,7 +117,7 @@ export async function POST(request: NextRequest) {
             title: title || '',
         }));
     } catch (error) {
-        console.error('Instagram API Error:', error);
+
         return addSecurityHeaders(NextResponse.json(
             { success: false, error: 'Service temporarily unavailable' },
             { status: 500 }

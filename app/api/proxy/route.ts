@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { addSecurityHeaders } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,8 +56,8 @@ export async function GET(request: NextRequest) {
             referer = 'https://www.facebook.com/';
         }
 
-        console.log('Proxy fetching:', url);
-        console.log('Using referer:', referer);
+
+
 
         // Build headers
         const headers: Record<string, string> = {
@@ -80,22 +81,22 @@ export async function GET(request: NextRequest) {
             redirect: 'follow',
         });
 
-        console.log('Response status:', response.status);
-        console.log('Response content-type:', response.headers.get('content-type'));
+
+
 
         if (!response.ok) {
-            console.error('Fetch failed:', response.status, response.statusText);
-            return NextResponse.json(
+
+            return addSecurityHeaders(NextResponse.json(
                 { error: `Failed to fetch: ${response.status}` },
                 { status: response.status }
-            );
+            ));
         }
 
         const responseContentType = response.headers.get('content-type') || '';
 
         // If we got HTML, the link might have expired or need different handling
         if (responseContentType.includes('text/html')) {
-            console.error('Received HTML instead of media file');
+
             // Try to get the actual download by following the page
             return NextResponse.json(
                 { error: 'Download link expired or invalid. Please try again.' },
@@ -123,15 +124,16 @@ export async function GET(request: NextRequest) {
         }
 
         // Stream the response
-        return new NextResponse(response.body, {
+        const buffer = await response.arrayBuffer();
+        return addSecurityHeaders(new NextResponse(buffer, {
             status: 200,
             headers: responseHeaders,
-        });
+        }));
     } catch (error) {
-        console.error('Proxy error:', error);
-        return NextResponse.json(
+
+        return addSecurityHeaders(NextResponse.json(
             { error: 'Download failed' },
             { status: 500 }
-        );
+        ));
     }
 }

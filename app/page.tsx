@@ -37,7 +37,7 @@ function TeraboxIcon({ className }: { className?: string }) {
 const categories = [
     { id: "all", label: "Semua" },
     { id: "video", label: "Video" },
-    { id: "cloud", label: "Cloud Storage" },
+
 ];
 
 const tools = [

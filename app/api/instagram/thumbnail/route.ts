@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { addSecurityHeaders } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
         });
 
         if (!response.ok) {
-            console.error('Thumbnail fetch failed:', response.status);
+
             return NextResponse.json(
                 { error: 'Failed to fetch thumbnail' },
                 { status: response.status }
@@ -69,16 +70,18 @@ export async function GET(request: NextRequest) {
             responseHeaders.set('Content-Length', contentLength);
         }
 
+        const buffer = await response.arrayBuffer();
+
         // Return the image
-        return new NextResponse(response.body, {
+        return addSecurityHeaders(new NextResponse(buffer, {
             status: 200,
             headers: responseHeaders,
-        });
+        }));
     } catch (error) {
-        console.error('Instagram thumbnail proxy error:', error);
-        return NextResponse.json(
+
+        return addSecurityHeaders(NextResponse.json(
             { error: 'Failed to load thumbnail' },
             { status: 500 }
-        );
+        ));
     }
 }
