@@ -48,11 +48,10 @@ export default function RootLayout({
                     attribute="class"
                     defaultTheme="dark"
                     enableSystem
-                    disableTransitionOnChange
                 >
                     <div className="min-h-screen flex flex-col">
                         {/* Header */}
-                        <header className="border-b">
+                        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                             <div className="container mx-auto px-4 py-2 flex items-center justify-between">
                                 <Link href="/" className="flex items-center space-x-2">
                                     <Image
@@ -67,10 +66,10 @@ export default function RootLayout({
                                         AIOD
                                     </h1>
                                 </Link>
-                                <nav className="flex items-center gap-4">
+                                <nav className="flex items-center gap-0.5">
                                     <Link
                                         href="/about"
-                                        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                                        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mr-1"
                                     >
                                         About
                                     </Link>

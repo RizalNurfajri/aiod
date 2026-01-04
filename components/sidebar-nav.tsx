@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Download, Instagram, Facebook, Youtube, ChevronDown } from "lucide-react";
+import { Download, Instagram, Facebook, Youtube, ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Custom TikTok Icon
@@ -97,19 +97,17 @@ export function SidebarNav() {
     const ActiveIcon = activeItem.icon;
 
     return (
-        <div className="relative z-50" ref={menuRef}>
+        <div className="relative z-50 flex items-center" ref={menuRef}>
             {/* Trigger Button */}
             <Button
-                variant="outline"
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 h-10 px-3"
+                className="relative"
             >
-                <Menu className="h-4 w-4" />
-                <div className="hidden sm:flex items-center gap-2">
-                    <ActiveIcon className={`h-4 w-4 ${activeItem.color}`} />
-                    <span className="text-sm font-medium">{activeItem.name}</span>
-                </div>
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                <Menu className={`h-5 w-5 transition-all absolute ${isOpen ? "rotate-90 scale-0" : "rotate-0 scale-100"}`} />
+                <X className={`h-5 w-5 transition-all absolute ${isOpen ? "rotate-0 scale-100" : "-rotate-90 scale-0"}`} />
+                <span className="sr-only">Toggle menu</span>
             </Button>
 
             {/* Dropdown Menu */}
